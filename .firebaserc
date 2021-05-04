@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "kanban-backend-89fb7": {
+      "hosting": {
+        "Kanban": [
+          "kanban-backend-89fb7"
+        ]
+      }
+    }
+  }
+}
