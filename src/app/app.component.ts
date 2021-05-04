@@ -1,4 +1,8 @@
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
+import { Task } from './task/task';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskDialogComponent, TaskDialogResult } from './task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,42 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Kanban';
+  todo: Task[] = [
+    { title: 'Buy milk', description: 'Go to the store and buy milk' },
+    { title: 'Create Kanban board', description: 'Develop a Kanban bord' }
+  ];
+  inProgress: Task[] = [];
+  done: Task[] = [];
+
+  constructor(private dialog: MatDialog) {
+
+  }
+
+  drop(event: CdkDragDrop<Task[]>): void {
+    if (event.previousContainer === event.container) {
+      return;
+    }
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  edit(list: string, task: Task): void {
+
+  }
+
+  newTask(): void {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '270px',
+      data: {
+        task: {}
+      }
+    });
+    dialogRef
+      .afterClosed()
+      .subscribe((result: TaskDialogResult) => this.todo.push(result.task));
+  }
 }
